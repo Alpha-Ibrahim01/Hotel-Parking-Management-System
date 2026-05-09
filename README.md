@@ -5,7 +5,7 @@
 A web-based hotel parking and room booking management system developed using **Node.js, Express, MySQL, HTML, CSS, and JavaScript**. The system helps hotel management handle room availability, bookings, and customer records efficiently with real-time database synchronization.
 
 ## How To Compile
-- git clone (https://github.com/Alpha-Ibrahim01/Hotel-Parking-Management-System.git)[Github Link]
+- git clone [Github Link](https://github.com/Alpha-Ibrahim01/Hotel-Parking-Management-System.git)
 cd hotel-booking-system
 - Database Setup
 - Open MySQL Workbench.
