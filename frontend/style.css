@@ -1,0 +1,181 @@
+/* ================= GLOBAL ================= */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  /* Aapka original background waisa hi rahega */
+  background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url("hotel.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+/* ================= LOGIN PAGE (Center-Bottom Fix) ================= */
+/* ================= LOGIN PAGE STYLES ================= */
+
+/* Title ko screen ke center mein lane ke liye */
+.title-box {
+  position: absolute;
+  top: 40%;           /* Screen ke beech se thoda upar */
+  left: 50%;
+  transform: translate(-50%, -50%); /* Bilkul center alignment */
+  text-align: center;
+  z-index: 10;
+}
+
+/* Hotel Days Inn ke peeche Blue Box */
+.title-box h1 {
+  margin: 0;
+  font-size: 42px;    /* Thoda bada size */
+  font-weight: bold;
+  color: white;
+  background: #003b95; /* Blue Background */
+  padding: 30px 50px;  /* Box ki width/height */
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  display: inline-block; /* Taake box sirf text jitna ho */
+  letter-spacing: 2px;
+}
+
+/* Login box (Input + Button) ko title ke theek niche rakhne ke liye */
+.login-wrapper {
+  position: absolute;
+  top: 60%;           /* Title ke niche position */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 100%;
+}
+
+/* Login Input aur Button wala Blue Box */
+.login-blue-box {
+  background: #003b95;
+  padding: 35px 35px;
+  border-radius: 12px;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  display: inline-flex; /* Box ko elements ke hisab se adjust karne ke liye */
+}
+
+/* Background Fix (Taki purana code kharab na ho) */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url("hotel.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  min-height: 100vh;
+  position: relative; /* Absolute elements ke liye zaroori hai */
+}
+
+/* ================= DASHBOARD (app.html) STYLES ================= */
+/* Navbar aur baaki cheezein jo pehle theek thi */
+.navbar {
+  background: #003b95;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  width: 100%;
+}
+
+.welcome-bar {
+  background: #003b95;
+  color: white;
+  width: 100%;
+  padding: 12px 40px;
+  font-size: 16px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.hero {
+  height: 65vh;
+  display: flex;
+  align-items: center;
+  padding-left: 60px;
+}
+
+.search-bar {
+  width: 350px;
+  background: rgba(0,0,0,0.85);
+  border-left: 5px solid #003b95;
+  padding: 35px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  backdrop-filter: blur(10px);
+}
+
+.search-box {
+  background: rgba(255,255,255,0.1);
+  color: white;
+  padding: 14px;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.blue-version {
+  background: #003b95 !important;
+  color: white;
+  border: none;
+  padding: 15px;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+/* ================= MODALS ================= */
+.modal {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.7); display: none;
+  justify-content: center; align-items: center; z-index: 2000;
+}
+
+.dark-modal {
+  background: #000000 !important;
+  color: #ffffff !important;
+  padding: 35px;
+  width: 400px;
+  border-radius: 12px;
+  text-align: center;
+  border: 1px solid #333;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.confirm-btn {
+    background: #003b95 !important;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.close-btn {
+    background: #444 !important;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Utils */
+.logo { font-size: 26px; font-weight: bold; }
+.menu { display: flex; align-items: center; gap: 20px; }
+.user-display { background: rgba(255,255,255,0.2); padding: 5px 12px; border-radius: 4px; }

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HOTEL DAYS INN - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="navbar">
+    <div class="logo">HOTEL DAYS INN</div>
+    
+    <div class="menu">
+        <span onclick="openAvail()">Availability</span>
+        <span onclick="location.reload()">Booking</span>
+        <span class="user-display">Room No: <b id="userInfo"></b></span>
+    </div>
+</div>
+
+<div class="welcome-bar">
+    <span id="output">Welcome to HOTEL DAYS INN. Please select a date to book.</span>
+</div>
+
+<div class="hero">
+    <div class="search-bar">
+        <div class="search-box">
+            🛏 Room No: <span id="userInfo2"></span>
+        </div>
+        <div class="search-box">
+            📅 Select Date & Time
+        </div>
+        <button class="search-btn blue-version" onclick="openModal()">
+            BOOK NOW!
+        </button>
+    </div>
+</div>
+
+<div class="modal" id="bookingModal">
+    <div class="modal-content dark-modal">
+        <h2>Book Your Slot</h2>
+        <input type="date" id="bookingDate">
+        <input type="time" id="bookingTime">
+        
+        <div class="modal-buttons">
+            <button class="confirm-btn" onclick="confirmBooking()">Confirm Booking</button>
+            <button class="close-btn" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="availModal">
+    <div class="modal-content dark-modal">
+        <h2>Current Availability</h2>
+        <div class="avail-list">
+            <p>👨‍💼 Chief: 2</p>
+            <p>🌟 VIP: 2</p>
+            <p>♿ Disabled: 5</p>
+            <p>🚗 Normal: 5</p>
+        </div>
+        <br>
+        <button class="close-btn" onclick="closeAvail()">Close</button>
+    </div>
+</div>
+
+<div class="status-popup" id="statusPopup">
+    <div class="status-content" id="statusContent"></div>
+</div>
+
+<script>
+const baseURL = "http://localhost:5000";
+const roomNo = localStorage.getItem("roomNo");
+
+document.getElementById("userInfo").innerText = roomNo || "101";
+document.getElementById("userInfo2").innerText = roomNo || "101";
+
+function openModal() { document.getElementById("bookingModal").style.display = "flex"; }
+function closeModal() { document.getElementById("bookingModal").style.display = "none"; }
+function openAvail() {
+    // Backend se data mangne ke liye
+    fetch("http://localhost:5000/availability")
+    .then(res => res.json())
+    .then(data => {
+        // Initial counts set karein
+        let counts = { Chief: 0, VIP: 0, Disabled: 0, Normal: 0 };
+        
+        // Jo data DB se aya usse counts update karein
+        data.forEach(item => {
+            counts[item.category] = item.count;
+        });
+
+        // Modal ke andar list ko update karein emojis ke sath
+        document.querySelector(".avail-list").innerHTML = `
+            <p>👨‍💼 Chief: ${counts.Chief}</p>
+            <p>🌟 VIP: ${counts.VIP}</p>
+            <p>♿ Disabled: ${counts.Disabled}</p>
+            <p>🚗 Normal: ${counts.Normal}</p>
+        `;
+        
+        // Modal show karein
+        document.getElementById("availModal").style.display = "flex";
+    })
+    .catch(err => {
+        console.error("Error:", err);
+        alert("Database se connect nahi ho pa raha!");
+    });
+}
+function closeAvail() { document.getElementById("availModal").style.display = "none"; }
+
+function confirmBooking() {
+    const date = document.getElementById("bookingDate").value;
+    const time = document.getElementById("bookingTime").value;
+    const roomNo = localStorage.getItem("roomNo"); // Login se aya hua room number
+
+    if(!date || !time) { 
+        alert("Please select date and time"); 
+        return; 
+    }
+
+    fetch("http://localhost:5000/book-slot", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ roomNo, date, time })
+    })
+    .then(res => res.json())
+    .then(data => {
+        closeModal();
+        const popup = document.getElementById("statusPopup");
+        const content = document.getElementById("statusContent");
+        popup.style.display = "flex";
+
+        if (data.status === "full" || data.message === "Already Booked") {
+            content.innerText = "❌ Already Booked!";
+            content.style.backgroundColor = "red";
+        } else {
+            content.innerText = "✅ Success!";
+            content.style.backgroundColor = "green";
+            // Strip par message update karna
+            document.getElementById("output").innerText = `✅ Booked! | Room: ${roomNo} | Date: ${date} | Time: ${time}`;
+        }
+        
+        setTimeout(() => { popup.style.display = "none"; }, 2500);
+    })
+    .catch(err => alert("Server connected nahi hai!"));
+}
+
+</script>
+
+</body>
+</html>

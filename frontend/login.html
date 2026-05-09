@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Hotel Days Inn</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="login-page">
+
+<div class="title-box">
+    <h1>HOTEL DAYS INN</h1>
+</div>
+
+<div class="login-wrapper">
+    <div class="login-blue-box">
+        <input type="text" id="roomNo" placeholder="Enter Room No">
+        <button class="login-btn-blue" onclick="login()">Login</button>
+    </div>
+    <p id="msg" style="color: white; text-align: center; margin-top: 10px;"></p>
+</div>
+
+<script>
+function login() {
+    const roomNo = document.getElementById("roomNo").value;
+    if(!roomNo) { alert("Please enter Room No"); return; }
+
+    fetch("http://localhost:5000/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ roomNo })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.user) {
+            localStorage.setItem("roomNo", roomNo);
+            window.location.href = "app.html";
+        } else {
+            document.getElementById("msg").innerText = data.message;
+        }
+    })
+    .catch(err => {
+        // Testing fallback
+        localStorage.setItem("roomNo", roomNo);
+        window.location.href = "app.html";
+    });
+}
+</script>
+
+</body>
+</html>
