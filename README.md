@@ -6,7 +6,7 @@ A web-based hotel parking and room booking management system developed using **N
 
 ## How To Compile
 - git clone [Github Link](https://github.com/Alpha-Ibrahim01/Hotel-Parking-Management-System.git)
-cd hotel-booking-system
+- cd hotel-booking-system
 - Database Setup
 - Open MySQL Workbench.
 - Create a database named hotel_db.
