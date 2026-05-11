@@ -4,11 +4,14 @@ const cors = require('cors');
 
 const app = express();
 
-// Middleware
-app.use(cors());
+// CORS ko configure kiya taake Port 5500 se connection accept ho
+app.use(cors({
+    origin: "*", // Sabhi ports allow kar diye testing ke liye
+    methods: ["GET", "POST"]
+}));
+
 app.use(express.json());
 
-// MySQL Connection
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -18,35 +21,35 @@ const db = mysql.createConnection({
 
 db.connect(err => {
     if (err) {
-        console.error("❌ Database connection failed: " + err.message);
+        console.error("❌ DB Error: " + err.message);
         return;
     }
     console.log("✅ MySQL Connected!");
 });
 
-// LOGIN API
+// LOGIN ROUTE
 app.post('/login', (req, res) => {
     const { roomNo } = req.body;
     db.query('SELECT * FROM rooms WHERE room_no = ?', [roomNo], (err, results) => {
-        if (err) return res.status(500).json({ message: "Database Error" });
+        if (err) return res.status(500).json({ message: "DB Error" });
         if (results.length > 0) {
             res.json({ user: true });
         } else {
-            res.json({ user: false, message: "Invalid Room Number!" });
+            res.json({ user: false, message: "Room not found!" });
         }
     });
 });
 
-// AVAILABILITY API
+// AVAILABILITY ROUTE
 app.get('/availability', (req, res) => {
     const sql = `SELECT category, COUNT(*) as count FROM rooms WHERE is_booked = 0 GROUP BY category`;
     db.query(sql, (err, results) => {
-        if (err) return res.status(500).json({ message: "Database error" });
+        if (err) return res.status(500).json({ message: "DB Error" });
         res.json(results);
     });
 });
 
-// BOOK SLOT API
+// BOOKING ROUTE (Updates both tables)
 app.post('/book-slot', (req, res) => {
     const { roomNo, date, time } = req.body;
     db.query('SELECT category, is_booked FROM rooms WHERE room_no = ?', [roomNo], (err, result) => {
@@ -65,7 +68,4 @@ app.post('/book-slot', (req, res) => {
     });
 });
 
-// Start Server
-app.listen(5000, () => {
-    console.log("🚀 Server running on http://localhost:5000");
-});
+app.listen(5000, () => console.log("🚀 Server: http://localhost:5000"));
